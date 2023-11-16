@@ -18,7 +18,6 @@ interface DocumentListProps {
 export const DocumentList = ({
     parentDocumentId,
     level = 0,
-    data
 }:DocumentListProps) => {
     const params = useParams();
     const router = useRouter();
@@ -33,7 +32,7 @@ export const DocumentList = ({
     const documents = useQuery(api.documents.getSidebar, {
         parentDocument: parentDocumentId
     });
-
+    console.log(documents)
     const onRedirect = (documentId: string) => {
         router.push(`/documents/${documentId}`)
     }
@@ -54,41 +53,39 @@ export const DocumentList = ({
 
     return (
         <>
-            <p
-                style={{
-                    paddingLeft: level ? `${(level * 12) + 25}px` : undefined
-                }}
-                className={cn(
-                    "text-sm hidden font-medium text-muted-foreground/80",
-                    expanded && " last:block",
-                    level === 0 && "hidden"
-                )}
-            >
-                No pages inside
-            </p>
-            {documents.map((document) => {
-                <div
-                    key={document._id}
-                >
-                    <Item 
-                        id={document._id}
-                        onClick={() => onRedirect(document._id)}
-                        label={document.title}
-                        icon={FileIcon}
-                        documentIcon={document.icon}
-                        active={params.documentId === document._id}
-                        level={level}
-                        onExpand={() => onExpand(document._id)}
-                        expanded={expanded[document._id]}
-                    />
-                    {expanded[document._id] && (
-                        <DocumentList
-                            parentDocumentId={document._id}
-                            level={level + 1}
-                        />
-                    )}
-                </div>
-            })}
-        </>
+        <p
+          style={{
+            paddingLeft: level ? `${(level * 12) + 25}px` : undefined
+          }}
+          className={cn(
+            "hidden text-sm font-medium text-muted-foreground/80",
+            expanded && "last:block",
+            level === 0 && "hidden"
+          )}
+        >
+          No pages inside
+        </p>
+        {documents.map((document) => (
+          <div key={document._id}>
+            <Item
+              id={document._id}
+              onClick={() => onRedirect(document._id)}
+              label={document.title}
+              icon={FileIcon}
+              documentIcon={document.icon}
+              active={params.documentId === document._id}
+              level={level}
+              onExpand={() => onExpand(document._id)}
+              expanded={expanded[document._id]}
+            />
+            {expanded[document._id] && (
+              <DocumentList
+                parentDocumentId={document._id}
+                level={level + 1}
+              />
+            )}
+          </div>
+        ))}
+      </>
     )
 }
