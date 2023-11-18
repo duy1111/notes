@@ -32,7 +32,6 @@ export const DocumentList = ({
     const documents = useQuery(api.documents.getSidebar, {
         parentDocument: parentDocumentId
     });
-    console.log(documents)
     const onRedirect = (documentId: string) => {
         router.push(`/documents/${documentId}`)
     }
