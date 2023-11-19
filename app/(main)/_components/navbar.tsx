@@ -54,6 +54,7 @@ export const Navbar = ({
                         initialData={document}
                     />
                     <div className="flex items-center gap-x-2" >
+                        {/* <Published/> */}
                         <Menu
                             documentId={document._id}
                         />
